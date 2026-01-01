@@ -81,17 +81,17 @@ def list_playlists():
 # -------------------------
 # Function 5: Recommend songs for a person based on likes
 # -------------------------
-def recommend_songs_for_person(person_name):
-    person = getattr(mymusic, person_name, None)
+def recommend_songs_for_person(person):
     if person is None:
-        print(f"Person '{person_name}' not found in ontology!")
+        print("Person not found!")
         return
     liked_songs = getattr(person, "likes", [])
     recommendations = []
     for song in Song.instances():
         if song not in liked_songs:
             recommendations.append(song.name)
-    print(f"\n🎯 Recommended songs for {person_name}: {recommendations}")
+    print(f"\n🎯 Recommended songs for {person.name}: {recommendations}")
+
 
 # -------------------------
 # MAIN PROGRAM
@@ -101,5 +101,7 @@ if __name__ == "__main__":
     list_artists()
     list_inferred_classes()
     list_playlists()
-    # Example recommendation for "Me"
-    recommend_songs_for_person("Me")
+    # Loop logic to go through all People (including the Artists)
+    #for user in Person.instances():
+        #recommend_songs_for_person(user)
+    
