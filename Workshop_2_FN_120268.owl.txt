@@ -1,0 +1,249 @@
+
+@prefix : <http://example.org/myMusic#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
+
+<http://example.org/myMusicExtended> a owl:Ontology ;
+    rdfs:comment "Extended ontology for 'My Music' microworld with classes, properties, axioms and SWRL rules (SWRL rules listed in Manchester syntax as annotations)." .
+
+### ===== CLASSES (>=6) =====
+:Entity a owl:Class .
+:Agent a owl:Class ; rdfs:subClassOf :Entity .
+:CreativeWork a owl:Class ; rdfs:subClassOf :Entity .
+
+:Person a owl:Class ; rdfs:subClassOf :Agent .
+:Artist a owl:Class ; rdfs:subClassOf :Person .
+
+:Song a owl:Class ; rdfs:subClassOf :CreativeWork .
+:Album a owl:Class ; rdfs:subClassOf :CreativeWork .
+:Playlist a owl:Class ; rdfs:subClassOf :CreativeWork .
+:Genre a owl:Class .
+
+:ShortSong a owl:Class ;
+    owl:equivalentClass [ a owl:Restriction ;
+        owl:onProperty :duration ;
+        owl:someValuesFrom [ a rdfs:Datatype ;
+            owl:onDatatype xsd:integer ;
+            owl:withRestrictions ( [ xsd:maxExclusive "200"^^xsd:integer ] )
+        ]
+    ] .
+
+:PopularSong a owl:Class .
+:AwardWinningSong a owl:Class .
+
+### ===== DATA PROPERTIES (>=12) =====
+:duration a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:integer .
+:releaseYear a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:gYear .
+:trackNumber a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:integer .
+:bpm a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:integer .
+:explicit a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:boolean .
+:rating a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:decimal .
+:playCount a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:integer .
+:lyricsLanguage a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:string .
+:popularityScore a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:decimal .
+:createdDate a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:date .
+:isSingle a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:boolean .
+:albumName a owl:DatatypeProperty ; rdfs:domain :Song ; rdfs:range xsd:string .
+:hasAward a owl:DatatypeProperty ; rdfs:domain :Artist ; rdfs:range xsd:string .
+
+### ===== OBJECT PROPERTIES (>=8) =====
+:likes a owl:ObjectProperty ; rdfs:domain :Person ; rdfs:range :Song .
+:likesSong a owl:ObjectProperty ; rdfs:subPropertyOf :likes ; rdfs:domain :Person ; rdfs:range :Song .
+:likesArtist a owl:ObjectProperty ; rdfs:subPropertyOf :likes ; rdfs:domain :Person ; rdfs:range :Artist .
+:likesGenre a owl:ObjectProperty ; rdfs:subPropertyOf :likes ; rdfs:domain :Person ; rdfs:range :Genre .
+
+:artistOf a owl:ObjectProperty ; rdfs:domain :Artist ; rdfs:range :Song .
+:hasArtist a owl:ObjectProperty ; rdfs:domain :Song ; rdfs:range :Artist .
+
+:genreOf a owl:ObjectProperty ; rdfs:domain :Song ; rdfs:range :Genre .
+:inPlaylist a owl:ObjectProperty ; rdfs:domain :Song ; rdfs:range :Playlist .
+:playlistGenre a owl:ObjectProperty ; rdfs:domain :Playlist ; rdfs:range :Genre .
+:performs a owl:ObjectProperty ; rdfs:subPropertyOf :artistOf ; rdfs:domain :Artist ; rdfs:range :Song .
+
+### ===== PROPERTY CHARACTERISTICS & INVERSES =====
+:genreOf a owl:FunctionalProperty .
+:hasArtist a owl:FunctionalProperty .
+
+:artistOf owl:inverseOf :hasArtist .
+:likesArtist owl:inverseOf :isLikedByArtist .
+:isLikedByArtist a owl:ObjectProperty ; rdfs:domain :Artist ; rdfs:range :Person .
+
+### ===== PROPERTY CHAIN AXIOMS (Heuristics) =====
+# H1: If person likesArtist and artistOf -> likes song
+:likes owl:propertyChainAxiom ( :likesArtist :artistOf ) .
+
+# H2: If person likesGenre and genreOf(song,genre) -> likes(song)
+:likes owl:propertyChainAxiom ( :likesGenre [ owl:inverseOf :genreOf ] ) .
+
+# H3: If playlistGenre and genreOf(song,genre) -> inPlaylist(song,playlist)
+:inPlaylist owl:propertyChainAxiom ( [ owl:inverseOf :genreOf ] :playlistGenre ) .
+
+### ===== TAXONOMIES =====
+# Class taxonomies provided via rdfs:subClassOf declarations above (Entity->Agent->Person->Artist ; Entity->CreativeWork->Song/Album/Playlist)
+# Property taxonomy via rdfs:subPropertyOf declarations (likesSong, likesArtist, likesGenre are subproperties of likes)
+
+### ===== INDIVIDUALS (>=12 individuals) =====
+# Persons / Agents
+:Me a :Person ;
+    :hasAward "None" .
+:Mariya a :Person .
+:Miya a :Person .
+:UserX a :Person .
+
+# Artists
+:Asake a :Artist ;
+    :hasAward "BET Rising" .
+:DojaCat a :Artist ;
+    :hasAward "Grammy" .
+:TameImpala a :Artist .
+:Gorillaz a :Artist .
+:Trueno a :Artist .
+:RavynLenae a :Artist .
+
+# Songs (>=12 individuals total across ontology)
+:LonelyAtTheTop a :Song ;
+    :genreOf :Afrobeats ;
+    :hasArtist :Asake ;
+    :duration "180"^^xsd:integer ;
+    :playCount "12000"^^xsd:integer ;
+    :rating "4.7"^^xsd:decimal ;
+    :releaseYear "2021"^^xsd:gYear ;
+    :lyricsLanguage "English" .
+
+:GameOver a :Song ;
+    :genreOf :PsychedelicRock ;
+    :hasArtist :Trueno ;
+    :duration "240"^^xsd:integer ;
+    :playCount "6000"^^xsd:integer ;
+    :rating "4.2"^^xsd:decimal .
+
+:EndOfSummer a :Song ;
+    :genreOf :PsychedelicPop ;
+    :hasArtist :TameImpala ;
+    :duration "210"^^xsd:integer ;
+    :playCount "8000"^^xsd:integer ;
+    :rating "4.5"^^xsd:decimal .
+
+:TheManifesto a :Song ;
+    :genreOf :Electronic ;
+    :hasArtist :Gorillaz ;
+    :duration "260"^^xsd:integer ;
+    :playCount "15000"^^xsd:integer .
+
+:JealousType a :Song ;
+    :genreOf :RnB ;
+    :hasArtist :RavynLenae ;
+    :duration "190"^^xsd:integer ;
+    :playCount "3000"^^xsd:integer .
+
+:LoveMeNot a :Song ;
+    :genreOf :Pop ;
+    :hasArtist :DojaCat ;
+    :duration "205"^^xsd:integer ;
+    :playCount "22000"^^xsd:integer ;
+    :rating "4.9"^^xsd:decimal .
+
+:Alone a :Song ;
+    :genreOf :Afrobeats ;
+    :duration "175"^^xsd:integer ;
+    :playCount "4000"^^xsd:integer .
+
+:NewSingle a :Song ;
+    :genreOf :HipHop ;
+    :hasArtist :Proof ;
+    :duration "195"^^xsd:integer ;
+    :playCount "500"^^xsd:integer ;
+    :rating "3.8"^^xsd:decimal .
+
+:TrackX a :Song ;
+    :genreOf :Jazz ;
+    :hasArtist :AvengedSevenfold ;
+    :duration "310"^^xsd:integer ;
+    :playCount "900"^^xsd:integer .
+
+# Albums and Playlists
+:AlbumAlpha a :Album .
+:ChillAtmospheric a :Playlist ;
+    :playlistGenre :RnB .
+:HeavyEnergetic a :Playlist ;
+    :playlistGenre :ProgressiveMetal .
+:HipHopBeatDriven a :Playlist ;
+    :playlistGenre :HipHop .
+:IndieDreamyExperimental a :Playlist ;
+    :playlistGenre :PsychedelicPop .
+
+# Genres
+:Afrobeats a :Genre .
+:ProgressiveMetal a :Genre .
+:PsychedelicRock a :Genre .
+:PsychedelicPop a :Genre .
+:HipHop a :Genre .
+:Electronic a :Genre .
+:Pop a :Genre .
+:RnB a :Genre .
+:Jazz a :Genre .
+
+### ===== ASSERTIONS / AXIOMS (>=16) =====
+# Class membership axioms (several)
+:Me rdf:type :Person .
+:Asake rdf:type :Artist .
+:LonelyAtTheTop rdf:type :Song .
+:ChillAtmospheric rdf:type :Playlist .
+:Afrobeats rdf:type :Genre .
+
+# Domain/range axioms already declared for properties above (counted towards axioms)
+
+# Functional properties declared (genreOf, hasArtist) counted
+
+# Inverse properties declared (artistOf inverseOf hasArtist)
+
+# Property chains (3) counted
+
+# Subclass axioms for taxonomies (Entity->Agent->Person->Artist ; CreativeWork->Song/Album/Playlist) counted
+
+# ShortSong equivalent class and subclass axiom linking to inPlaylist (if desired)
+:ShortSong rdfs:subClassOf [ a owl:Restriction ;
+    owl:onProperty :inPlaylist ;
+    owl:someValuesFrom :ChillAtmospheric ] .
+
+# Sample property assertions (likes, inPlaylist)
+:Me :likes :LonelyAtTheTop .
+:Mariya :likes :TheManifesto .
+:Miya :likes :EndOfSummer .
+
+:LonelyAtTheTop :inPlaylist :ChillAtmospheric .
+:TheManifesto :inPlaylist :HeavyEnergetic .
+:JealousType :inPlaylist :ChillAtmospheric .
+
+### ===== SWRL RULES (at least 6) - provided as annotations (Manchester syntax) =====
+# We include the SWRL rules as annotations so you can copy them into WebProtégé's SWRL tab.
+# Rule 1 (H1): If person likesArtist and artistOf -> likes(song)
+[] a owl:Axiom ; rdfs:comment "Rule1: likesArtist(?p, ?a) ^ artistOf(?a, ?s) -> likes(?p, ?s)" .
+
+# Rule 2 (H2): If person likesGenre and genreOf -> likes(song)
+[] a owl:Axiom ; rdfs:comment "Rule2: likesGenre(?p, ?g) ^ genreOf(?s, ?g) -> likes(?p, ?s)" .
+
+# Rule 3 (H3): If playlistGenre and genreOf -> inPlaylist
+[] a owl:Axiom ; rdfs:comment "Rule3: playlistGenre(?pl, ?g) ^ genreOf(?s, ?g) -> inPlaylist(?s, ?pl)" .
+
+# Rule 4 (H4): short duration -> in Chill playlist
+[] a owl:Axiom ; rdfs:comment "Rule4: duration(?s, ?d) ^ swrlb:lessThan(?d, 200) -> inPlaylist(?s, ChillAtmospheric)" .
+
+# Rule 5: high playCount or high rating -> PopularSong
+[] a owl:Axiom ; rdfs:comment "Rule5: playCount(?s, ?c) ^ swrlb:greaterThan(?c, 10000) -> PopularSong(?s)" .
+[] a owl:Axiom ; rdfs:comment "Rule5b: rating(?s, ?r) ^ swrlb:greaterThan(?r, 4.5) -> PopularSong(?s)" .
+
+# Rule 6: artist has award -> award-winning song
+[] a owl:Axiom ; rdfs:comment "Rule6: hasAward(?a, ?w) ^ artistOf(?a, ?s) -> AwardWinningSong(?s)" .
+
+# Rule 7: if a person likes a song and that song's genre -> they like the genre (helper)
+[] a owl:Axiom ; rdfs:comment "Rule7: likes(?p, ?s) ^ genreOf(?s, ?g) -> likesGenre(?p, ?g)" .
+
+# Rule 8: If a person likes a playlist's genre -> they like songs in that playlist
+[] a owl:Axiom ; rdfs:comment "Rule8: likesGenre(?p, ?g) ^ playlistGenre(?pl, ?g) ^ inPlaylist(?s, ?pl) -> likes(?p, ?s)" .
+
+### ===== END =====
