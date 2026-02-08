@@ -32,7 +32,7 @@ AwardWinningSong = mymusic.AwardWinningSong
 # Function 1: List all songs
 # -------------------------
 def list_songs():
-    print("🎵 Songs in ontology:")
+    print(" Songs in ontology:")
     for song in Song.instances():
         artist = getattr(song, "hasArtist", None)
         artist_name = artist.name if artist else "Unknown"
@@ -45,7 +45,7 @@ def list_songs():
 # Function 2: List all artists
 # -------------------------
 def list_artists():
-    print("\n🎤 Artists in ontology:")
+    print("\n Artists in ontology:")
     for artist in Artist.instances():
         award = getattr(artist, "hasAward", ["None"])
         print(f"- {artist.name} | Award: {award}")
@@ -54,7 +54,7 @@ def list_artists():
 # Function 3: List inferred classes
 # -------------------------
 def list_inferred_classes():
-    print("\n📊 Inferred classes:")
+    print("\n Inferred classes:")
     if PopularSong:
         print("Popular Songs:")
         for song in PopularSong.instances():
@@ -72,7 +72,7 @@ def list_inferred_classes():
 # Function 4: List playlists and their songs
 # -------------------------
 def list_playlists():
-    print("\n🎧 Playlists and songs:")
+    print("\n Playlists and songs:")
     for playlist in Playlist.instances():
         songs_in_playlist = [s.name for s in Song.instances() if playlist in getattr(s, "inPlaylist", [])]
         print(f"- {playlist.name}: {songs_in_playlist}")
@@ -98,7 +98,7 @@ def recommend_songs_for_person(person_name_or_object):
                 break
 
         if person is None:
-            print(f"❌ Error: Person '{person_name_or_object}' not found!")
+            print(f" Error: Person '{person_name_or_object}' not found!")
             return
         person_name = person_name_or_object
     else:
@@ -114,7 +114,7 @@ def recommend_songs_for_person(person_name_or_object):
     for song in Song.instances():
         if song not in liked_songs:
             recommendations.append(song.name)
-    print(f"\n🎯 Recommended songs for {person_name}: {recommendations}")
+    print(f"\n Recommended songs for {person_name}: {recommendations}")
 
 # -------------------------
 # Function 6: Add favorite song to user's favorites playlist
@@ -137,7 +137,7 @@ def add_favorite_to_playlist(person_name, song_name):
                 break
 
         if person is None:
-            print(f"❌ Error: Person '{person_name}' not found!")
+            print(f" Error: Person '{person_name}' not found!")
             return False
 
         # Find the song
@@ -148,7 +148,7 @@ def add_favorite_to_playlist(person_name, song_name):
                 break
 
         if song is None:
-            print(f"❌ Error: Song '{song_name}' not found!")
+            print(f" Error: Song '{song_name}' not found!")
             return False
 
         # Create or find the favorites playlist name
@@ -164,14 +164,14 @@ def add_favorite_to_playlist(person_name, song_name):
         # Create the favorites playlist if it doesn't exist
         if favorites_playlist is None:
             favorites_playlist = Playlist(favorites_playlist_name)
-            print(f"✅ Created new favorites playlist: {favorites_playlist_name}")
+            print(f" Created new favorites playlist: {favorites_playlist_name}")
         else:
-            print(f"📝 Using existing favorites playlist: {favorites_playlist_name}")
+            print(f" Using existing favorites playlist: {favorites_playlist_name}")
 
         # Check if the song is already in the playlist
         current_playlists = getattr(song, "inPlaylist", [])
         if favorites_playlist in current_playlists:
-            print(f"ℹ️  Song '{song_name}' is already in {person_name}'s favorites playlist")
+            print(f"  Song '{song_name}' is already in {person_name}'s favorites playlist")
             return True
 
         # Add the song to the playlist
@@ -184,7 +184,7 @@ def add_favorite_to_playlist(person_name, song_name):
             liked_songs.append(song)
             person.likes = liked_songs
 
-        print(f"✅ Added '{song_name}' to {person_name}'s favorites playlist")
+        print(f" Added '{song_name}' to {person_name}'s favorites playlist")
         return True
 
 
@@ -208,7 +208,7 @@ def show_user_favorites(person_name):
             break
 
     if favorites_playlist is None:
-        print(f"📭 {person_name} doesn't have a favorites playlist yet")
+        print(f" {person_name} doesn't have a favorites playlist yet")
         return
 
     # Get all songs in this playlist
@@ -217,11 +217,11 @@ def show_user_favorites(person_name):
 
     if songs_in_favorites:
         song_names = [song.name for song in songs_in_favorites]
-        print(f"\n⭐ {person_name}'s Favorites Playlist ({len(song_names)} songs):")
+        print(f"\n {person_name}'s Favorites Playlist ({len(song_names)} songs):")
         for i, song_name in enumerate(song_names, 1):
             print(f"   {i}. {song_name}")
     else:
-        print(f"📭 {person_name}'s favorites playlist is empty")
+        print(f" {person_name}'s favorites playlist is empty")
 
 # -------------------------
 # MAIN PROGRAM
