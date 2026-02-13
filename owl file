@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/myMusic#"
+     xml:base="http://example.org/myMusic"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:swrl="http://www.w3.org/2003/11/swrl#"
+     xmlns:swrlb="http://www.w3.org/2003/11/swrlb#">
+    <owl:Ontology rdf:about="http://example.org/myMusic"/>
+    
+    <!-- Classes -->
+    <owl:Class rdf:about="http://example.org/myMusic#Song"/>
+    <owl:Class rdf:about="http://example.org/myMusic#Artist"/>
+    <owl:Class rdf:about="http://example.org/myMusic#Playlist"/>
+    <owl:Class rdf:about="http://example.org/myMusic#Person"/>
+    <owl:Class rdf:about="http://example.org/myMusic#PopularSong">
+        <rdfs:subClassOf rdf:resource="http://example.org/myMusic#Song"/>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.org/myMusic#ShortSong">
+        <rdfs:subClassOf rdf:resource="http://example.org/myMusic#Song"/>
+    </owl:Class>
+    <owl:Class rdf:about="http://example.org/myMusic#AwardWinningSong">
+        <rdfs:subClassOf rdf:resource="http://example.org/myMusic#Song"/>
+    </owl:Class>
+    
+    <!-- Object Properties -->
+    <owl:ObjectProperty rdf:about="http://example.org/myMusic#hasArtist">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Song"/>
+        <rdfs:range rdf:resource="http://example.org/myMusic#Artist"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="http://example.org/myMusic#inPlaylist">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Song"/>
+        <rdfs:range rdf:resource="http://example.org/myMusic#Playlist"/>
+    </owl:ObjectProperty>
+    
+    <owl:ObjectProperty rdf:about="http://example.org/myMusic#likes">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Person"/>
+        <rdfs:range rdf:resource="http://example.org/myMusic#Song"/>
+    </owl:ObjectProperty>
+    
+    <!-- Data Properties -->
+    <owl:DatatypeProperty rdf:about="http://example.org/myMusic#duration">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Song"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="http://example.org/myMusic#rating">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Song"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="http://example.org/myMusic#playCount">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Song"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+    </owl:DatatypeProperty>
+    
+    <owl:DatatypeProperty rdf:about="http://example.org/myMusic#hasAward">
+        <rdfs:domain rdf:resource="http://example.org/myMusic#Artist"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+    <!-- Artists -->
+    <Artist rdf:about="http://example.org/myMusic#TaylorSwift">
+        <rdfs:label>Taylor Swift</rdfs:label>
+        <hasAward rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Grammy Award</hasAward>
+    </Artist>
+    
+    <Artist rdf:about="http://example.org/myMusic#Drake">
+        <rdfs:label>Drake</rdfs:label>
+        <hasAward rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Billboard Award</hasAward>
+    </Artist>
+    
+    <Artist rdf:about="http://example.org/myMusic#BillieEilish">
+        <rdfs:label>Billie Eilish</rdfs:label>
+        <hasAward rdf:datatype="http://www.w3.org/2001/XMLSchema#string">MTV Award</hasAward>
+    </Artist>
+    
+    <!-- Songs -->
+    <Song rdf:about="http://example.org/myMusic#LonelyAtTheTop">
+        <rdfs:label>LonelyAtTheTop</rdfs:label>
+        <hasArtist rdf:resource="http://example.org/myMusic#TaylorSwift"/>
+        <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#int">180</duration>
+        <rating rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.5</rating>
+        <playCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">50000</playCount>
+    </Song>
+    
+    <Song rdf:about="http://example.org/myMusic#EndOfSummer">
+        <rdfs:label>EndOfSummer</rdfs:label>
+        <hasArtist rdf:resource="http://example.org/myMusic#Drake"/>
+        <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#int">150</duration>
+        <rating rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.8</rating>
+        <playCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">75000</playCount>
+    </Song>
+    
+    <Song rdf:about="http://example.org/myMusic#LoveMeNot">
+        <rdfs:label>LoveMeNot</rdfs:label>
+        <hasArtist rdf:resource="http://example.org/myMusic#TaylorSwift"/>
+        <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#int">200</duration>
+        <rating rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.2</rating>
+        <playCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">30000</playCount>
+    </Song>
+    
+    <Song rdf:about="http://example.org/myMusic#TheManifesto">
+        <rdfs:label>TheManifesto</rdfs:label>
+        <hasArtist rdf:resource="http://example.org/myMusic#Drake"/>
+        <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#int">120</duration>
+        <rating rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.9</rating>
+        <playCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">100000</playCount>
+    </Song>
+    
+    <Song rdf:about="http://example.org/myMusic#JealousType">
+        <rdfs:label>JealousType</rdfs:label>
+        <hasArtist rdf:resource="http://example.org/myMusic#BillieEilish"/>
+        <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#int">140</duration>
+        <rating rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.6</rating>
+        <playCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">60000</playCount>
+    </Song>
+    
+    <Song rdf:about="http://example.org/myMusic#GameOver">
+        <rdfs:label>GameOver</rdfs:label>
+        <hasArtist rdf:resource="http://example.org/myMusic#BillieEilish"/>
+        <duration rdf:datatype="http://www.w3.org/2001/XMLSchema#int">110</duration>
+        <rating rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.7</rating>
+        <playCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int">80000</playCount>
+    </Song>
+    
+    <!-- People -->
+    <Person rdf:about="http://example.org/myMusic#Me">
+        <rdfs:label>Me</rdfs:label>
+    </Person>
+    
+    <Person rdf:about="http://example.org/myMusic#Mariya">
+        <rdfs:label>Mariya</rdfs:label>
+    </Person>
+    
+    <Person rdf:about="http://example.org/myMusic#Miya">
+        <rdfs:label>Miya</rdfs:label>
+    </Person>
+    
+    <!-- Initial Playlists -->
+    <Playlist rdf:about="http://example.org/myMusic#SummerPlaylist">
+        <rdfs:label>SummerPlaylist</rdfs:label>
+    </Playlist>
+    
+    <Playlist rdf:about="http://example.org/myMusic#ChillPlaylist">
+        <rdfs:label>ChillPlaylist</rdfs:label>
+    </Playlist>
+    
+    <!-- SWRL Rules -->
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#PopularSong"/>
+                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#Song"/>
+                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://example.org/myMusic#playCount"/>
+                                <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                                <swrl:argument2 rdf:resource="http://example.org/myMusic#?count"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#greaterThan"/>
+                                        <swrl:arguments rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="http://example.org/myMusic#?count"/>
+                                            <rdf:Description rdf:about="http://example.org/myMusic#50000"/>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#ShortSong"/>
+                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#Song"/>
+                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://example.org/myMusic#duration"/>
+                                <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                                <swrl:argument2 rdf:resource="http://example.org/myMusic#?duration"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#BuiltinAtom"/>
+                                        <swrl:builtin rdf:resource="http://www.w3.org/2003/11/swrlb#lessThan"/>
+                                        <swrl:arguments rdf:parseType="Collection">
+                                            <rdf:Description rdf:about="http://example.org/myMusic#?duration"/>
+                                            <rdf:Description rdf:about="http://example.org/myMusic#150"/>
+                                        </swrl:arguments>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#Imp"/>
+        <swrl:head>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#AwardWinningSong"/>
+                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+            </rdf:Description>
+        </swrl:head>
+        <swrl:body>
+            <rdf:Description>
+                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                <rdf:first>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#Song"/>
+                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                    </rdf:Description>
+                </rdf:first>
+                <rdf:rest>
+                    <rdf:Description>
+                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                        <rdf:first>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#IndividualPropertyAtom"/>
+                                <swrl:propertyPredicate rdf:resource="http://example.org/myMusic#hasArtist"/>
+                                <swrl:argument1 rdf:resource="http://example.org/myMusic#?song"/>
+                                <swrl:argument2 rdf:resource="http://example.org/myMusic#?artist"/>
+                            </rdf:Description>
+                        </rdf:first>
+                        <rdf:rest>
+                            <rdf:Description>
+                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                <rdf:first>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#ClassAtom"/>
+                                        <swrl:classPredicate rdf:resource="http://example.org/myMusic#Artist"/>
+                                        <swrl:argument1 rdf:resource="http://example.org/myMusic#?artist"/>
+                                    </rdf:Description>
+                                </rdf:first>
+                                <rdf:rest>
+                                    <rdf:Description>
+                                        <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#AtomList"/>
+                                        <rdf:first>
+                                            <rdf:Description>
+                                                <rdf:type rdf:resource="http://www.w3.org/2003/11/swrl#DatavaluedPropertyAtom"/>
+                                                <swrl:propertyPredicate rdf:resource="http://example.org/myMusic#hasAward"/>
+                                                <swrl:argument1 rdf:resource="http://example.org/myMusic#?artist"/>
+                                                <swrl:argument2 rdf:resource="http://example.org/myMusic#?award"/>
+                                            </rdf:Description>
+                                        </rdf:first>
+                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                    </rdf:Description>
+                                </rdf:rest>
+                            </rdf:Description>
+                        </rdf:rest>
+                    </rdf:Description>
+                </rdf:rest>
+            </rdf:Description>
+        </swrl:body>
+    </rdf:Description>
+    
+</rdf:RDF>
+
